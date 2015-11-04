@@ -1,0 +1,20 @@
+<section ng-controller="GroupsController" ng-init="find()">
+  <div class="page-header">
+    <h1>Groups</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="group in groups" ui-sref="groups.view({groupId: group._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="group.created | date:'mediumDate'"></span>
+        by
+        <span ng-bind="group.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="group.title"></h4>
+      <p class="list-group-item-text" ng-bind="group.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="groups.$resolved && !groups.length">
+    No groups yet, why don't you <a ui-sref="groups.create">create one</a>?
+  </div>
+</section>
