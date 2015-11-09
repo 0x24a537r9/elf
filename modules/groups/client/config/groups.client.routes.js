@@ -31,6 +31,13 @@ angular.module('groups').config(['$stateProvider',
         data: {
           roles: ['user', 'admin']
         }
+      })
+      .state('join', {
+        url: '/join/:groupId',
+        templateUrl: 'modules/groups/client/views/join-group.client.view.html',
+        data: {
+          roles: ['user', 'admin']
+        }
       });
   }
 ]);

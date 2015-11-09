@@ -76,7 +76,7 @@ exports.delete = function (req, res) {
  * List of Groups
  */
 exports.list = function (req, res) {
-  Group.find().sort('-created').populate('owner', 'displayName').exec(function (err, groups) {
+  Group.find({ 'owner._id': req.user._id }).sort('-created').populate('owner', 'displayName').exec(function (err, groups) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

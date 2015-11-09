@@ -70,10 +70,14 @@ var GroupSchema = new Schema({
     trim: true,
     required: 'Please fill in group name'
   },
-  members: [MemberSchema],
   eventDate: {
     type: Date,
     default: getNextChristmasDate
+  },
+  members: [MemberSchema],
+  isOpen: {
+    type: Boolean,
+    default: true
   },
   created: {
     type: Date,

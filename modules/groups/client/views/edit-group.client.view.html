@@ -1,20 +1,61 @@
 <section ng-controller="GroupsController" ng-init="findOne()">
   <div class="page-header">
-    <h1>Edit Group</h1>
+    <h1>Add Members</h1>
   </div>
   <div class="col-md-12">
     <form name="groupForm" class="form-horizontal" ng-submit="update(groupForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label for="title">Title</label>
-          <input name="title" type="text" ng-model="group.title" id="title" class="form-control" placeholder="Title" required>
-          <div ng-messages="groupForm.title.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Group title is required.</p>
+          <label for="displayName">Name</label>
+          <input name="displayName" type="text" ng-model="group.displayName" id="displayName" class="form-control" placeholder="Title" required>
+          <div ng-messages="groupForm.displayName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Group name is required.</p>
           </div>
         </div>
         <div class="form-group">
-          <label for="content">Content</label>
-          <textarea name="content" ng-model="group.content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
+          <label for="eventDate">Event date</label>
+          <div class="row">
+            <div class="col-xs-4" show-errors="{ skipFormGroupCheck: true }">
+              <select name="month" ng-model="month" id="month" class="form-control" required>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              <div ng-messages="groupForm.month.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">You also need a month.</p>
+              </div>
+            </div>
+            <div class="col-xs-4" show-errors="{ skipFormGroupCheck: true }">
+              <input name="day" type="number" min="1" max="31" ng-model="day" id="day" class="form-control" placeholder="25" required>
+              <div ng-messages="groupForm.day.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">You'll need the day.</p>
+                <p class="help-block error-text" ng-message="number">That's not a number.</p>
+                <p class="help-block error-text" ng-message="min">When is that?</p>
+                <p class="help-block error-text" ng-message="max">Come on now.</p>
+              </div>
+            </div>
+            <div class="col-xs-4" show-errors="{ skipFormGroupCheck: true }">
+              <input name="year" type="number" min="2015" max="2099" ng-model="year" id="year" class="form-control" ng-attr-placeholder="{{nextChristmasYear}}" required>
+              <div ng-messages="groupForm.year.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">&hellip;what year?</p>
+                <p class="help-block error-text" ng-message="min">Uh, are you sure about that?</p>
+                <p class="help-block error-text" ng-message="max">Don't be silly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="members">Members</label>
+          <div>TODO</div>
         </div>
         <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">
@@ -24,5 +65,8 @@
         </div>
       </fieldset>
     </form>
+  </div>
+  <div class="col-md-12">
+    or go to <a ui-sref="join({groupId: group._id})">http://localhost:3000/join/{{group._id}}</a>
   </div>
 </section>
