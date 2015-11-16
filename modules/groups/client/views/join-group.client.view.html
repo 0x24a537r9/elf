@@ -3,7 +3,7 @@
     <h1>Join {{group.displayName}}</h1>
   </div>
   <div class="col-md-12">
-    <form name="memberForm" class="form-horizontal" ng-submit="update(memberForm.$valid)" novalidate>
+    <form name="memberForm" ng-show="group.isOpen" class="form-horizontal" ng-submit="update(memberForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group">
           <div class="row">
@@ -30,5 +30,8 @@
         </div>
       </fieldset>
     </form>
+    <div ng-hide="group.isOpen">
+      Uh-oh. Looks like you missed the deadline! All the assignments have already been set!
+    </div>
   </div>
 </section>
