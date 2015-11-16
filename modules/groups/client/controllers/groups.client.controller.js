@@ -8,6 +8,19 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
     $scope.year = new Date().getFullYear();
     $scope.month = 12;
     $scope.day = 25;
+
+    /**
+     * Generates a random 64-bit ID and encodes it in URL-safe base64. Must be kept in sync with the
+     * similarly-named function in group.server.model.js.
+     */
+    function generateRandomId() {
+      var id = '';
+      var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
+      for (var i = 0; i < 11; ++i) {
+        id += chars[Math.floor(Math.random() * 64)];
+      }
+      return id;
+    }
     
     // Create new Group
     $scope.create = function (isValid) {
@@ -59,6 +72,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'groupForm');
+        $scope.$broadcast('show-errors-check-validity', 'memberForm');
 
         return false;
       }
@@ -87,7 +101,25 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
         $scope.year = eventDate.getFullYear();
         $scope.month = eventDate.getMonth() + 1;
         $scope.day = eventDate.getDate();
+        $scope.maybeAddBlankMember();
       });
+    };
+
+    $scope.removeMember = function (i) {
+      $scope.group.members.splice(i, 1);
+    };
+
+    $scope.maybeAddBlankMember = function () {
+      var members = $scope.group.members;
+      if (members.length <= 0 ||
+          members[members.length - 1].displayName ||
+          members[members.length - 1].email) {
+        members.push({
+          _id: generateRandomId(),
+          displayName: '',
+          email: ''
+        });
+      }
     };
   }
 ]);

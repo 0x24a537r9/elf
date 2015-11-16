@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Group = mongoose.model('Group'),
+  Member = mongoose.model('Member'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -41,9 +42,15 @@ exports.update = function (req, res) {
 
   group.displayName = req.body.displayName;
   group.eventDate = req.body.eventDate;
-  // TODO: Implement
-  group.members = [];
   
+  group.members = [];
+  for (var i = 0; i < req.body.members.length; ++i) {
+    var member = new Member(req.body.members[i]);
+    if (!member.validateSync()) {
+      group.members.push(member);
+    }
+  }
+
   group.save(function (err) {
     if (err) {
       return res.status(400).send({

@@ -9,15 +9,16 @@ var mongoose = require('mongoose'),
   validator = require('validator');
 
 /**
- * Generates a random 64-bit ID and encodes it in base64.
- * Adapted from http://goo.gl/IkysrS.
+ * Generates a random 64-bit ID and encodes it in URL-safe base64. Must be kept in sync with the
+ * similarly-named function in groups.client.controller.js.
  */
 function generateRandomId() {
-  return crypto.randomBytes(8)  // Generate a random 64-bit integer,
-      .toString('base64')       // convert to base64 format,
-      .substr(0, 11)            // return 11 characters,
-      .replace(/\+/g, '-')      // replace '+' with '-', and
-      .replace(/\//g, '_');     // replace '/' with '_'.
+  var id = '';
+  var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
+  for (var i = 0; i < 11; ++i) {
+    id += chars[Math.floor(Math.random() * 64)];
+  }
+  return id;
 }
 
 /** Gets this year's Christmas date. */
@@ -35,13 +36,14 @@ var MemberSchema = new Schema({
   },
   displayName: {
     type: String,
-    trim: true
+    trim: true,
+    required: 'Please fill in a member name'
   },
   email: {
     type: String,
     lowercase: true,
     trim: true,
-    default: '',
+    required: 'Please fill in an email address',
     validate: [validator.isEmail, 'Please fill a valid email address']
   },
   has: {
