@@ -35,7 +35,12 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
       // Create new Group object
       var group = new Groups({
         displayName: this.displayName,
-        eventDate: this.year + '-' + this.month + '-' + this.day
+        eventDate: this.year + '-' + this.month + '-' + this.day,
+        members: [{
+          _id: generateRandomId(),
+          displayName: Authentication.user.displayName,
+          email: Authentication.user.email
+        }]
       });
 
       // Redirect after save
