@@ -3,29 +3,30 @@
     <h1>Join</h1>
   </div>
   <div class="col-md-12">
-    <form name="groupForm" class="form-horizontal" ng-submit="update(groupForm.$valid)" novalidate>
+    <form name="memberForm" class="form-horizontal" ng-submit="update(memberForm.$valid)" novalidate>
       <fieldset>
-        <div class="form-group" show-errors>
-          <label for="displayName">Name</label>
-          <input name="displayName" type="text" ng-model="group.displayName" id="displayName" class="form-control" placeholder="Title" required>
-          <div ng-messages="groupForm.displayName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Group name is required.</p>
+        <div class="form-group">
+          <div class="col-xs-6" show-errors="{ skipFormGroupCheck: true }">
+            <input name="memberDisplayName" type="text" ng-model="group.members[group.members.length - 1].displayName" class="form-control" placeholder="Name" required>
+            <div ng-messages="memberForm.memberDisplayName.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">I think you forgot something.</p>
+            </div>
+          </div>
+          <div class="col-xs-6" show-errors="{ skipFormGroupCheck: true }">
+            <input name="memberEmail" type="email" ng-model="group.members[group.members.length - 1].email" class="form-control" placeholder="Email" required>
+            <div ng-messages="memberForm.memberEmail.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">I think you forgot something.</p>
+              <p class="help-block error-text" ng-message="email">&hellip;that's not an email address.</p>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="members">Content</label>
-          <textarea name="members" ng-model="group.members" id="members" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
-        </div>
-        <div class="form-group">
-          <input type="submit" value="Update" class="btn btn-default">
+          <input type="submit" value="Join" class="btn btn-default">
         </div>
         <div ng-show="error" class="text-danger">
           <strong ng-bind="error"></strong>
         </div>
       </fieldset>
     </form>
-  </div>
-  <div class="col-md-12">
-    join
   </div>
 </section>

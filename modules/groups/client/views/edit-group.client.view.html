@@ -58,19 +58,19 @@
           <div class="row" ng-repeat="member in group.members">
             <ng-form name="memberForm">
               <div class="col-xs-5" show-errors="{ skipFormGroupCheck: true }">
-                <input name="memberDisplayName" type="text" ng-model="member.displayName" ng-change="maybeAddBlankMember()" ng-id="memberDisplayName" class="form-control" placeholder="Name" ng-required="!$last">
+                <input name="memberDisplayName" type="text" ng-model="member.displayName" ng-change="maybeAddBlankMember()" class="form-control" placeholder="Name" ng-required="!$last">
                 <div ng-messages="memberForm.memberDisplayName.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">I think you forgot something.</p>
                 </div>
               </div>
               <div class="col-xs-5" show-errors="{ skipFormGroupCheck: true }">
-                <input name="memberEmail" type="email" ng-model="member.email" ng-change="maybeAddBlankMember()" ng-id="memberEmail" class="form-control" placeholder="Email" ng-required="!$last">
+                <input name="memberEmail" type="email" ng-model="member.email" ng-change="maybeAddBlankMember()" class="form-control" placeholder="Email" ng-required="!$last">
                 <div ng-messages="memberForm.memberEmail.$error" role="alert">
                   <p class="help-block error-text" ng-message="required">I think you forgot something.</p>
                   <p class="help-block error-text" ng-message="email">&hellip;that's not an email address.</p>
                 </div>
               </div>
-              <button type="button" class="close col-xs-1 ng-click="removeMember($index)" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
+              <button type="button" class="close col-xs-1" ng-click="removeMember($index)" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
             </ng-form>
           </div>
         </div>
