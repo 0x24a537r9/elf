@@ -6,9 +6,8 @@ angular.module('groups').factory('Groups', ['$resource',
     return $resource('api/groups/:groupId', {
       groupId: '@_id'
     }, {
-      update: {
-        method: 'PUT'
-      }
+      update: { method: 'PUT' },
+      updateAndSendEmails: { method: 'PUT', params: { sendEmails: true } }
     });
   }
 ]);

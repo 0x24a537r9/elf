@@ -1,22 +1,18 @@
 <section ng-controller="GroupsController" ng-init="findOne()">
   <div class="page-header">
-    <h1 ng-bind="group.title"></h1>
+    <h1>{{group.displayName}}</h1>
   </div>
-  <div class="pull-right" ng-show="authentication.user._id == group.user._id">
-    <a class="btn btn-primary" ui-sref="groups.edit({groupId: group._id})">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn btn-primary" ng-click="remove();">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
+  <div class="col-md-12">
+    <div class="row">
+      <label for="eventDate">Event date:</label> {{group.eventDate}}
+    </div>
+    <div class="row" ng-repeat="member in group.members">
+      {{member.displayName}} -> {{findOneMember(member.has).displayName}}
+    </div>
+    <button ng-click="randomizeAssignments()" class="btn btn-default">Randomize</button>
+    <button ng-click="updateAndSendEmails()" class="btn btn-default">Close entry and send email</button>
+    <div ng-show="error" class="text-danger">
+      <strong ng-bind="error"></strong>
+    </div>
   </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span ng-bind="group.created | date:'mediumDate'"></span>
-      by
-      <span ng-bind="group.user.displayName"></span>
-    </em>
-  </small>
-  <p class="lead" ng-bind="group.content"></p>
 </section>

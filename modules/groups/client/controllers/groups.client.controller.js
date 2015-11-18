@@ -92,13 +92,25 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
       });
     };
 
+    // Update existing Group and send emails
+    $scope.updateAndSendEmails = function () {
+      $scope.error = null;
+      var group = $scope.group;
+
+      group.$updateAndSendEmails(function () {
+        $location.path('groups/' + group._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
     // Find a list of Groups
     $scope.find = function () {
       $scope.groups = Groups.query();
     };
 
-    // Find existing Group
-    $scope.findOne = function () {
+    // Find an existing Group
+    $scope.findOne = function (autoAddBlankMember) {
       $scope.group = Groups.get({
         groupId: $stateParams.groupId
       }, function() {
@@ -106,14 +118,28 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
         $scope.year = eventDate.getFullYear();
         $scope.month = eventDate.getMonth() + 1;
         $scope.day = eventDate.getDate();
-        $scope.maybeAddBlankMember();
+        if (autoAddBlankMember) {
+          $scope.maybeAddBlankMember();
+        }
       });
     };
 
+    // Find one member of the group by their id
+    $scope.findOneMember = function (id) {
+      var members = $scope.group.members;
+      for (var i = 0; i < members.length; ++i) {
+        if (members[i]._id === id) {
+          return members[i];
+        }
+      }
+    };
+
+    // Remove one member of the group by their index
     $scope.removeMember = function (i) {
       $scope.group.members.splice(i, 1);
     };
 
+    // Ensure there's always a blank member at the end of the members list
     $scope.maybeAddBlankMember = function () {
       var members = $scope.group.members;
       if (members.length <= 0 ||
@@ -124,6 +150,26 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
           displayName: '',
           email: ''
         });
+      }
+    };
+
+    // Randomize the assignments of members
+    $scope.randomizeAssignments = function () {
+      var members = $scope.group.members.slice();
+      
+      // Shuffle the members (using Knuth's algorithm)
+      for (var i = members.length - 1; i > 0; --i) {
+        var randomIndex = Math.floor(Math.random() * i + 1);
+        var swap = members[i];
+        members[i] = members[randomIndex];
+        members[randomIndex] = swap;
+      }
+
+      // Assign the members in order as a single large cycle
+      var lastMember = members[members.length - 1];
+      for (i = 0; i < members.length; ++i) {
+        members[i].has = lastMember._id;
+        lastMember = members[i];
       }
     };
   }

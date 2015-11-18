@@ -21,9 +21,9 @@ exports.create = function (req, res) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json(group);
     }
+
+    res.json(group);
   });
 };
 
@@ -56,9 +56,13 @@ exports.update = function (req, res) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json(group);
     }
+
+    if (req.query.sendEmails) {
+      console.info('Sending emails...');
+      // TODO: queue emails and set hasSentEmails to true.
+    }
+    res.json(group);
   });
 };
 
@@ -73,9 +77,9 @@ exports.delete = function (req, res) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json(group);
     }
+
+    res.json(group);
   });
 };
 
@@ -88,9 +92,9 @@ exports.list = function (req, res) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json(groups);
     }
+
+    res.json(groups);
   });
 };
 

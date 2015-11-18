@@ -77,9 +77,9 @@ var GroupSchema = new Schema({
     default: getNextChristmasDate
   },
   members: [MemberSchema],
-  isOpen: {
+  hasSentEmails: {
     type: Boolean,
-    default: true
+    default: false
   },
   created: {
     type: Date,
