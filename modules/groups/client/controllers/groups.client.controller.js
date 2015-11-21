@@ -66,7 +66,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 
       var group = $scope.group;
       group.$saveMember(function () {
-        $location.path('groups/' + group._id);
+        $location.path('groups/' + group._id + '/joined');
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -131,9 +131,6 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
     $scope.findOneToView = function () {
       $scope.group = Groups.get({
         groupId: $stateParams.groupId
-      }, function() {
-        var eventDate = new Date($scope.group.eventDate);
-        $scope.randomizeAssignments();
       });
     };
 
@@ -147,6 +144,24 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
         $scope.month = eventDate.getMonth() + 1;
         $scope.day = eventDate.getDate();
         $scope.maybeAddBlankMember();
+      });
+    };
+
+    // Find an existing Group
+    $scope.findOneAsGuest = function () {
+      $scope.group = Groups.getAsGuest({
+        groupId: $stateParams.groupId
+      }, function() {
+        $scope.maybeAddBlankMember();
+      });
+    };
+
+    // Find an existing Group
+    $scope.findOneToRandomize = function () {
+      $scope.group = Groups.get({
+        groupId: $stateParams.groupId
+      }, function() {
+        $scope.randomizeAssignments();
       });
     };
 

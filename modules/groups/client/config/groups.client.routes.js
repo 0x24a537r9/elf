@@ -41,6 +41,10 @@ angular.module('groups').config(['$stateProvider',
       .state('join', {
         url: '/join/:groupId',
         templateUrl: 'modules/groups/client/views/join-group.client.view.html'
+      })
+      .state('groups.joined', {
+        url: '/:groupId/joined',
+        templateUrl: 'modules/groups/client/views/joined-group.client.view.html'
       });
   }
 ]);
