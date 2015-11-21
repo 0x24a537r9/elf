@@ -12,7 +12,10 @@ angular.module('groups').config(['$stateProvider',
       })
       .state('groups.list', {
         url: '',
-        templateUrl: 'modules/groups/client/views/list-groups.client.view.html'
+        templateUrl: 'modules/groups/client/views/list-groups.client.view.html',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('groups.create', {
         url: '/create',
@@ -23,7 +26,10 @@ angular.module('groups').config(['$stateProvider',
       })
       .state('groups.view', {
         url: '/:groupId',
-        templateUrl: 'modules/groups/client/views/view-group.client.view.html'
+        templateUrl: 'modules/groups/client/views/view-group.client.view.html',
+        data: {
+          roles: ['user', 'admin']
+        }
       })
       .state('groups.edit', {
         url: '/:groupId/edit',
@@ -34,10 +40,7 @@ angular.module('groups').config(['$stateProvider',
       })
       .state('join', {
         url: '/join/:groupId',
-        templateUrl: 'modules/groups/client/views/join-group.client.view.html',
-        data: {
-          roles: ['user', 'admin']
-        }
+        templateUrl: 'modules/groups/client/views/join-group.client.view.html'
       });
   }
 ]);

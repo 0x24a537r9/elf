@@ -1,9 +1,9 @@
-<section ng-controller="GroupsController" ng-init="findOne()">
+<section ng-controller="GroupsController" ng-init="findOneAsGuest()">
   <div class="page-header">
     <h1>Join {{group.displayName}}</h1>
   </div>
   <div class="col-md-12">
-    <form name="memberForm" ng-show="group.isOpen" class="form-horizontal" ng-submit="update(memberForm.$valid)" novalidate>
+    <form name="memberForm" ng-hide="group.hasSentEmails" class="form-horizontal" ng-submit="createMember(memberForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group">
           <div class="row">
@@ -30,7 +30,7 @@
         </div>
       </fieldset>
     </form>
-    <div ng-hide="group.isOpen">
+    <div ng-show="group.hasSentEmails">
       Uh-oh. Looks like you missed the deadline! All the assignments have already been set!
     </div>
   </div>

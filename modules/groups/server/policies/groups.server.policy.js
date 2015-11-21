@@ -24,17 +24,14 @@ exports.invokeRolesPolicies = function () {
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/groups',
-      permissions: ['post']
-    }, {
-      resources: '/api/groups/:groupId',
-      permissions: ['get']
+      resources: '/api/groups/:groupId/members',
+      permissions: ['get', 'post']
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: '/api/groups/:groupId',
-      permissions: ['get']
+      resources: '/api/groups/:groupId/members',
+      permissions: ['get', 'post']
     }]
   }]);
 };
@@ -46,7 +43,7 @@ exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If a group is being processed and the current user created it then allow any manipulation
-  if (req.group && req.user && req.group.owner.id === req.user.id) {
+  if (!req.group || (req.group && req.user && req.group.owner.id === req.user.id)) {
     return next();
   }
 

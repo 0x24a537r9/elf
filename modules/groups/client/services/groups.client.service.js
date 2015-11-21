@@ -7,7 +7,9 @@ angular.module('groups').factory('Groups', ['$resource',
       groupId: '@_id'
     }, {
       update: { method: 'PUT' },
-      updateAndSendEmails: { method: 'PUT', params: { sendEmails: true } }
+      updateAndSendEmails: { method: 'PUT', params: { sendEmails: true } },
+      getAsGuest: { url: 'api/groups/:groupId/members', method: 'GET' },
+      saveMember: { url: 'api/groups/:groupId/members', method: 'POST' }
     });
   }
 ]);

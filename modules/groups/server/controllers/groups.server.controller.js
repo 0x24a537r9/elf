@@ -28,10 +28,55 @@ exports.create = function (req, res) {
 };
 
 /**
+ * Create a new member of a group
+ */
+exports.createMember = function (req, res) {
+  var group = req.group;
+
+  var member = new Member(req.body.members[0] || {});
+  var err = member.validateSync();
+  if (err) {
+    return res.status(400).send({
+      message: errorHandler.getErrorMessage(err)
+    });
+  }
+  
+  group.members.push(member);
+  group.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+
+    res.json({
+      _id: group._id,
+      displayName: group.displayName,
+      eventDate: group.eventDate,
+      members: [member],
+      hasSentEmails: group.hasSentEmails
+    });
+  });
+};
+
+/**
  * Show the current group
  */
 exports.read = function (req, res) {
   res.json(req.group);
+};
+
+/**
+ * Show the current group, but only return non-sensitive fields (i.e. no other member details)
+ */
+exports.readAsGuest = function (req, res) {
+  res.json({
+    _id: req.group._id,
+    displayName: req.group.displayName,
+    eventDate: req.group.eventDate,
+    members: [],
+    hasSentEmails: req.group.hasSentEmails
+  });
 };
 
 /**
@@ -43,11 +88,13 @@ exports.update = function (req, res) {
   group.displayName = req.body.displayName;
   group.eventDate = req.body.eventDate;
   
-  group.members = [];
-  for (var i = 0; i < req.body.members.length; ++i) {
-    var member = new Member(req.body.members[i]);
-    if (!member.validateSync()) {
-      group.members.push(member);
+  if (!group.hasSentEmails) {
+    group.members = [];
+    for (var i = 0; i < req.body.members.length; ++i) {
+      var member = new Member(req.body.members[i]);
+      if (!member.validateSync()) {
+        group.members.push(member);
+      }
     }
   }
 
@@ -80,21 +127,6 @@ exports.delete = function (req, res) {
     }
 
     res.json(group);
-  });
-};
-
-/**
- * List of Groups
- */
-exports.list = function (req, res) {
-  Group.find({ 'owner._id': req.user._id }).sort('-created').populate('owner', 'displayName').exec(function (err, groups) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    }
-
-    res.json(groups);
   });
 };
 

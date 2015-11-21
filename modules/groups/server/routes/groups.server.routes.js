@@ -9,7 +9,6 @@ var groupsPolicy = require('../policies/groups.server.policy'),
 module.exports = function (app) {
   // Groups collection routes
   app.route('/api/groups').all(groupsPolicy.isAllowed)
-    .get(groups.list)
     .post(groups.create);
 
   // Single group routes
@@ -17,6 +16,10 @@ module.exports = function (app) {
     .get(groups.read)
     .put(groups.update)
     .delete(groups.delete);
+
+  app.route('/api/groups/:groupId/members').all(groupsPolicy.isAllowed)
+    .get(groups.readAsGuest)
+    .post(groups.createMember);
 
   // Finish by binding the group middleware
   app.param('groupId', groups.groupById);

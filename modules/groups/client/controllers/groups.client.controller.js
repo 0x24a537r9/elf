@@ -54,6 +54,24 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
       });
     };
 
+    // Create new Group member
+    $scope.createMember = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'memberForm');
+
+        return false;
+      }
+
+      var group = $scope.group;
+      group.$saveMember(function () {
+        $location.path('groups/' + group._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
     // Remove existing Group
     $scope.remove = function (group) {
       if (group) {
@@ -121,6 +139,19 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
         if (autoAddBlankMember) {
           $scope.maybeAddBlankMember();
         }
+      });
+    };
+
+    // Find an existing Group as a gest
+    $scope.findOneAsGuest = function () {
+      $scope.group = Groups.getAsGuest({
+        groupId: $stateParams.groupId
+      }, function() {
+        var eventDate = new Date($scope.group.eventDate);
+        $scope.year = eventDate.getFullYear();
+        $scope.month = eventDate.getMonth() + 1;
+        $scope.day = eventDate.getDate();
+        $scope.maybeAddBlankMember();
       });
     };
 
