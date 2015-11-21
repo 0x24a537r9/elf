@@ -128,23 +128,18 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
     };
 
     // Find an existing Group
-    $scope.findOne = function (autoAddBlankMember) {
+    $scope.findOneToView = function () {
       $scope.group = Groups.get({
         groupId: $stateParams.groupId
       }, function() {
         var eventDate = new Date($scope.group.eventDate);
-        $scope.year = eventDate.getFullYear();
-        $scope.month = eventDate.getMonth() + 1;
-        $scope.day = eventDate.getDate();
-        if (autoAddBlankMember) {
-          $scope.maybeAddBlankMember();
-        }
+        $scope.randomizeAssignments();
       });
     };
 
-    // Find an existing Group as a gest
-    $scope.findOneAsGuest = function () {
-      $scope.group = Groups.getAsGuest({
+    // Find an existing Group
+    $scope.findOneToEdit = function () {
+      $scope.group = Groups.get({
         groupId: $stateParams.groupId
       }, function() {
         var eventDate = new Date($scope.group.eventDate);
